@@ -1,14 +1,11 @@
 import reflex as rx
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, SQLModel, Relationship
 from uuid import UUID, uuid4
 
-
-class ArticleTagLink(SQLModel, table=True):
-    article_id: UUID | None = Field(
-        default=None, foreign_key="article.id", primary_key=True
-    )
-    tag_id: UUID | None = Field(default=None, foreign_key="tag.id", primary_key=True)
+if TYPE_CHECKING:
+    from app.models.article import Article, ArticleRead
+from app.models.link import ArticleTagLink
 
 
 class TagBase(SQLModel):

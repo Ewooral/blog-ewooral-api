@@ -16,7 +16,7 @@ def create_tag(*, session: Session = Depends(get_session), tag_in: TagCreate) ->
     existing_tag = session.exec(select(Tag).where(Tag.name == tag_in.name)).first()
     if existing_tag:
         raise HTTPException(status_code=409, detail="Tag with this name already exists")
-    db_tag = Tag.from_orm(tag_in)
+    db_tag = Tag.model_validate(tag_in)
     session.add(db_tag)
     session.commit()
     session.refresh(db_tag)

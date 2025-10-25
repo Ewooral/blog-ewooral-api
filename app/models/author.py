@@ -1,7 +1,10 @@
 import reflex as rx
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, SQLModel, Relationship
 from uuid import UUID, uuid4
+
+if TYPE_CHECKING:
+    from app.models.article import Article, ArticleRead
 
 
 class AuthorBase(SQLModel):

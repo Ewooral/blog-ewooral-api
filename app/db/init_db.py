@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 def create_db_and_tables():
-    from app.models import user, article, author, category, tag
+    from app.models import user, article, author, category, tag, link
 
     SQLModel.metadata.create_all(engine)
 
