@@ -1,0 +1,11 @@
+
+reflex==0.8.15a1
+fastapi
+pydantic-settings
+sqlmodel
+uvicorn
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+
+httpx
