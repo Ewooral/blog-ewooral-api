@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "a-very-secret-key-that-should-be-in-an-env-file"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     ALGORITHM: str = "HS256"
+    BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:8000"]
 
     class Config:
         case_sensitive = True

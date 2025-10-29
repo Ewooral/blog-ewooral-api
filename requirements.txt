@@ -7,6 +7,7 @@ uvicorn
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+starlette
 
 httpx
 together
