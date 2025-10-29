@@ -1,53 +1,60 @@
 import reflex as rx
-from typing import TypedDict, Any
 import httpx
 import logging
+from typing import TypedDict, Optional
 
-API_URL = "http://127.0.0.1:8000/api/v1"
 
-
-class AuthorDict(TypedDict):
-    id: str
+class Author(TypedDict):
+    id: int
     name: str
-    bio: str | None
+    bio: Optional[str]
 
 
-class CategoryDict(TypedDict):
-    id: str
+class Category(TypedDict):
+    id: int
     name: str
-    description: str | None
+    description: Optional[str]
 
 
-class ArticleDict(TypedDict):
-    id: str
+class Tag(TypedDict):
+    id: int
+    name: str
+    description: Optional[str]
+
+
+class Article(TypedDict):
+    id: int
     title: str
     content: str
-    published_at: str | None
-    author_id: str
-    category_id: str
-    author: AuthorDict
-    category: CategoryDict
-    tags: list
+    published_at: str
+    author_id: int
+    category_id: int
+    author: Author
+    category: Category
+    tags: list[Tag]
+
+
+API_URL = "http://localhost:8000/api/v1"
 
 
 class ArticleState(rx.State):
-    articles: list[ArticleDict] = []
-    categories: list[CategoryDict] = []
+    articles: list[Article] = []
+    categories: list[Category] = []
+    is_loading: bool = False
     search_query: str = ""
-    selected_category: str = "all"
-    is_loading: bool = True
+    selected_category: str = ""
 
     @rx.event(background=True)
     async def fetch_articles_and_categories(self):
         async with self:
             self.is_loading = True
         try:
+            params = {}
+            if self.search_query:
+                params["search"] = self.search_query
+            if self.selected_category:
+                params["category"] = self.selected_category
             async with httpx.AsyncClient() as client:
-                params = {}
-                if self.selected_category != "all":
-                    params["category"] = self.selected_category
-                if self.search_query:
-                    params["search"] = self.search_query
                 articles_res = await client.get(f"{API_URL}/articles/", params=params)
                 articles_res.raise_for_status()
                 categories_res = await client.get(f"{API_URL}/categories/")
@@ -67,6 +74,6 @@ class ArticleState(rx.State):
         return ArticleState.fetch_articles_and_categories
 
     @rx.event
-    def set_selected_category(self, category_name: str):
-        self.selected_category = category_name
+    def set_selected_category(self, category: str):
+        self.selected_category = category
         return ArticleState.fetch_articles_and_categories

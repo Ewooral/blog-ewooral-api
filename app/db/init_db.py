@@ -1,4 +1,3 @@
-import reflex as rx
 from sqlmodel import SQLModel, Session, select
 from app.db.session import engine
 from app.models.author import Author

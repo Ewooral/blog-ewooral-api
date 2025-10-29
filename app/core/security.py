@@ -1,9 +1,9 @@
-import reflex as rx
 from datetime import datetime, timedelta, timezone
 import hashlib
 import secrets
 from jose import jwt
 from app.core.config import settings
+import logging
 
 
 def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
@@ -18,9 +18,6 @@ def create_access_token(subject: str, expires_delta: timedelta | None = None) ->
         to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM
     )
     return encoded_jwt
-
-
-import logging
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

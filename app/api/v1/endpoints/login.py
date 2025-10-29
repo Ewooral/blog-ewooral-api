@@ -1,7 +1,6 @@
-import reflex as rx
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
 from datetime import timedelta
 from app.api.deps import get_session
 from app.core.security import create_access_token, verify_password
@@ -11,7 +10,7 @@ from app.models.user import User
 router = APIRouter()
 
 
-class Token(rx.Base):
+class Token(SQLModel):
     access_token: str
     token_type: str
 
