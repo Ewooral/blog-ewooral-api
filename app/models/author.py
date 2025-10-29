@@ -1,7 +1,6 @@
 import reflex as rx
 from typing import Optional, TYPE_CHECKING
 from sqlmodel import Field, SQLModel, Relationship
-from uuid import UUID, uuid4
 
 if TYPE_CHECKING:
     from app.models.article import Article, ArticleRead
@@ -13,9 +12,7 @@ class AuthorBase(SQLModel):
 
 
 class Author(AuthorBase, table=True):
-    id: UUID = Field(
-        default_factory=uuid4, primary_key=True, index=True, nullable=False
-    )
+    id: Optional[int] = Field(default=None, primary_key=True)
     articles: list["Article"] = Relationship(back_populates="author")
 
 
@@ -24,7 +21,7 @@ class AuthorCreate(AuthorBase):
 
 
 class AuthorRead(AuthorBase):
-    id: UUID
+    id: int
 
 
 class AuthorReadWithArticles(AuthorRead):

@@ -1,7 +1,6 @@
 import reflex as rx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select
-from uuid import UUID
 from app.api.deps import get_session
 from app.models.article import (
     Article,
@@ -81,7 +80,7 @@ def read_articles(
     summary="Get a specific article",
 )
 def read_article(
-    *, session: Session = Depends(get_session), article_id: UUID
+    *, session: Session = Depends(get_session), article_id: int
 ) -> Article:
     """
     Get an article by its ID.
@@ -100,7 +99,7 @@ def read_article(
 def update_article(
     *,
     session: Session = Depends(get_session),
-    article_id: UUID,
+    article_id: int,
     article_in: ArticleUpdate,
 ) -> Article:
     """
@@ -127,7 +126,7 @@ def update_article(
     status_code=204,
     summary="Delete an article (requires authentication)",
 )
-def delete_article(*, session: Session = Depends(get_session), article_id: UUID):
+def delete_article(*, session: Session = Depends(get_session), article_id: int):
     """
     Delete an article by its ID.
     """

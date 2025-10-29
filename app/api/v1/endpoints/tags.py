@@ -1,7 +1,6 @@
 import reflex as rx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select
-from uuid import UUID
 from app.api.deps import get_session
 from app.models.tag import Tag, TagCreate, TagRead, TagUpdate, TagReadWithArticles
 
@@ -40,7 +39,7 @@ def read_tags(
 @router.get(
     "/{tag_id}", response_model=TagReadWithArticles, summary="Get a specific tag"
 )
-def read_tag(*, session: Session = Depends(get_session), tag_id: UUID) -> Tag:
+def read_tag(*, session: Session = Depends(get_session), tag_id: int) -> Tag:
     """
     Get a tag by its ID, including associated articles.
     """
@@ -52,7 +51,7 @@ def read_tag(*, session: Session = Depends(get_session), tag_id: UUID) -> Tag:
 
 @router.patch("/{tag_id}", response_model=TagRead, summary="Update a tag")
 def update_tag(
-    *, session: Session = Depends(get_session), tag_id: UUID, tag_in: TagUpdate
+    *, session: Session = Depends(get_session), tag_id: int, tag_in: TagUpdate
 ) -> Tag:
     """
     Update a tag's name or description.
@@ -70,7 +69,7 @@ def update_tag(
 
 
 @router.delete("/{tag_id}", status_code=204, summary="Delete a tag")
-def delete_tag(*, session: Session = Depends(get_session), tag_id: UUID):
+def delete_tag(*, session: Session = Depends(get_session), tag_id: int):
     """
     Delete a tag.
     """

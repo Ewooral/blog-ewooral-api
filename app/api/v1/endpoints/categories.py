@@ -1,7 +1,6 @@
 import reflex as rx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select
-from uuid import UUID
 from app.api.deps import get_session
 from app.models.category import Category, CategoryCreate, CategoryRead, CategoryUpdate
 
@@ -49,7 +48,7 @@ def read_categories(
     "/{category_id}", response_model=CategoryRead, summary="Get a specific category"
 )
 def read_category(
-    *, session: Session = Depends(get_session), category_id: UUID
+    *, session: Session = Depends(get_session), category_id: int
 ) -> Category:
     """
     Get a category by its ID.
@@ -66,7 +65,7 @@ def read_category(
 def update_category(
     *,
     session: Session = Depends(get_session),
-    category_id: UUID,
+    category_id: int,
     category_in: CategoryUpdate,
 ) -> Category:
     """
@@ -93,7 +92,7 @@ def update_category(
 
 
 @router.delete("/{category_id}", status_code=204, summary="Delete a category")
-def delete_category(*, session: Session = Depends(get_session), category_id: UUID):
+def delete_category(*, session: Session = Depends(get_session), category_id: int):
     """
     Delete a category.
     """

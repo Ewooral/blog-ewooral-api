@@ -1,7 +1,6 @@
 import reflex as rx
 from typing import Optional
 from sqlmodel import Field, SQLModel
-from uuid import UUID, uuid4
 
 
 class CategoryBase(SQLModel):
@@ -10,9 +9,7 @@ class CategoryBase(SQLModel):
 
 
 class Category(CategoryBase, table=True):
-    id: UUID = Field(
-        default_factory=uuid4, primary_key=True, index=True, nullable=False
-    )
+    id: Optional[int] = Field(default=None, primary_key=True)
 
 
 class CategoryCreate(CategoryBase):
@@ -20,7 +17,7 @@ class CategoryCreate(CategoryBase):
 
 
 class CategoryRead(CategoryBase):
-    id: UUID
+    id: int
 
 
 class CategoryUpdate(SQLModel):

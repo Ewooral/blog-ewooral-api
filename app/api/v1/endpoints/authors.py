@@ -1,7 +1,6 @@
 import reflex as rx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlmodel import Session, select
-from uuid import UUID
 from app.api.deps import get_session
 from app.models.author import (
     Author,
@@ -49,7 +48,7 @@ def read_authors(
     response_model=AuthorReadWithArticles,
     summary="Get a specific author",
 )
-def read_author(*, session: Session = Depends(get_session), author_id: UUID) -> Author:
+def read_author(*, session: Session = Depends(get_session), author_id: int) -> Author:
     """
     Get an author by their ID, including their articles.
     """
@@ -61,7 +60,7 @@ def read_author(*, session: Session = Depends(get_session), author_id: UUID) -> 
 
 @router.patch("/{author_id}", response_model=AuthorRead, summary="Update an author")
 def update_author(
-    *, session: Session = Depends(get_session), author_id: UUID, author_in: AuthorUpdate
+    *, session: Session = Depends(get_session), author_id: int, author_in: AuthorUpdate
 ) -> Author:
     """
     Update an author's name or bio.
@@ -79,7 +78,7 @@ def update_author(
 
 
 @router.delete("/{author_id}", status_code=204, summary="Delete an author")
-def delete_author(*, session: Session = Depends(get_session), author_id: UUID):
+def delete_author(*, session: Session = Depends(get_session), author_id: int):
     """
     Delete an author.
     """
